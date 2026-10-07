@@ -6,6 +6,10 @@ Bounce2::Button but0;
 #include <MicroOscSlip.h>
 MicroOscSlip<128> monOsc(&Serial); 
 
+#include <Chrono.h>
+Chrono chronoPot;
+
+
 void setup()
 {
     Serial.begin(115200);
@@ -49,5 +53,14 @@ void loop()
     } else {
         digitalWrite( 3 , LOW );
     }
+
+    if ( chronoPot.hasPassed(20)) { // SI LE CHRONO DÉPASSE 20 MILLISECONDES
+    chronoPot.restart(); // REPARTIR LE CHRONO
+
+    int valeur = analogRead(2); // LECTURE DE LA TENSION ENTRE 0 ET 1023
+
+    monOsc.sendInt("/pot", valeur); // ENVOYER LA VALEUR
+}
+
 
 }
